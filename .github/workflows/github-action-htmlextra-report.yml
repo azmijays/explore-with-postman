@@ -1,0 +1,17 @@
+name : Install newman
+run : |
+    npm install -g newman
+    npm install -g newman-reporter-htmlextra
+    
+# Make directory to upload the test results
+- name : Make Directory for results
+  run : mkdir -p testResults
+  
+ - name : Run API Tests
+  run : newman run "Restfull Booker BVT.postman_collection.json" -e production.postman_environment.json -r htmlextra -- reporter-htmlextra-export testResult
+  
+ - name : Output the run Details
+   uses : action/upload-artifact@v2
+   with :
+    name : RunReports
+    path : testResults
